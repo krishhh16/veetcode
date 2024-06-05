@@ -1,0 +1,5 @@
+name = "my-app"
+compatibility_date = "2023-12-01"
+
+[vars]
+DATABASE_URL="prisma://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5IjoiYzBkZjc4ZDctN2YzZi00MTU0LWE1YzEtMGIyMzMwOGQxNzM1IiwidGVuYW50X2lkIjoiNTRhMjI5OTYyNzRlYWQ0OTcyNGZhZmM0YTYyOTMyYWE5ZjVmNWZjODViNmZkZmUzMDdjMGJkNWIzYzI5MDU5MSIsImludGVybmFsX3NlY3JldCI6IjdkMjUzN2JkLTQ3NzUtNDlhYy1hY2JkLWEyODNhZjMxMGI2MSJ9.zZq2Pjw8ABKZjf3CmO-QSbFOMgjxOyG2uG0vZNGVN6c"
