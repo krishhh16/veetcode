@@ -9,7 +9,7 @@ export const auth = new Hono<{
         JWT_SECRET: string;
     }
 }>();
-import z from 'zod';
+import {z} from "zod";
 
 const propType = z.object({
     email: z.string().email(),
@@ -26,12 +26,9 @@ auth.post('/signup', async c => {
         username: z.string()
     })
 
+    type schemaPropType = z.infer<typeof signupSchema>
 
-    const {username, email, password}: {
-        username: string;
-        email: string;
-        password: string;
-    } = await c.req.json();
+    const {username, email, password}: schemaPropType = await c.req.json();
     try {
     if (!username || !email || !password){
         return c.json({success: false, msg: 'please fill some content'});
@@ -73,16 +70,18 @@ auth.post('/signin', async c => {
         datasourceUrl: c.env.DATABASE_URL
     }).$extends(withAccelerate())
 
-    const {email, password}: {
-       
-        email: string;
-        password: string;
-    } = await c.req.json();
-
+    type signinPropTypes = z.infer<typeof propType>
+    
+    const {email, password}: signinPropTypes = await c.req.json();
+    try{
     if ( !email || !password){
         return c.json({success: false, msg: 'please fill some content'});
     }
 
+    propType.parse(await c.req.json());
+ } catch(err){
+    return c.json({success: false, msg:"send right creds"})
+ }
     try {
         
         const userExists = await prisma.user.findFirst({
@@ -91,11 +90,13 @@ auth.post('/signin', async c => {
             }
         })
 
-        if(userExists) {
+        if(!userExists) {
             return c.json({success: false, msg: "The user already exists"});
         }
         
+        const token = await sign({email} , c.env.JWT_SECRET);
 
+        setCookie(c, 'authToken', token);
 
         return c.json({success: true, msg: "You have been signed up successfully"});
     } catch (err) {
