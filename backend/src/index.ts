@@ -7,12 +7,11 @@ app.get('/', (c) => {
   return c.text('Hello Hono!')
 })
 
-app.use("/", cors({
-  origin: 'http://localhost:3000'
+app.use("*", cors({
+  origin: 'http://localhost:3000',
+  allowMethods: ['POST', 'GET', "OPTIONS"],
 }))
 
 app.route('/auth', auth)
-
-
 
 export default app
